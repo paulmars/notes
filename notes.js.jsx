@@ -1,10 +1,10 @@
-// var Router = ReactRouter.Router;
-// var Link = ReactRouter.Link;
-// var Route = ReactRouter.Route;
-// var browserHistory = History.createHistory();
+var Router = ReactRouter.Router;
+var Link = ReactRouter.Link;
+var Route = ReactRouter.Route;
+var browserHistory = History.createHistory();
 
-// var Story = React.createClass({
-//   render: function() {
+var Note = React.createClass({
+  render: function() {
 
 //     // console.log(this.props.story.preview.images[0].source.url);
 //     // console.log(this.props.story.preview.images[0]);
@@ -25,63 +25,47 @@
 //       };
 //     }
 
-//     return (
-//       <div className="row" key={this.props.story.name}>
-//         <div className="col-xs-1">
-//           {this.props.story.score}
-//         </div>
-//         <div className="col-xs-11">
-//           <a href={this.props.story.url}>
-//             {this.props.story.title}
-//           </a>
-//           <br/>
-//           {this.props.story.author}
-//           <div dangerouslySetInnerHTML={t()} />
-//           <div>
-//             { imageTag }
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   },
-// })
+    return (
+      <div className="row" key={this.props.key}>
+        <div className="col-xs-1">
+          {this.props.note.copy}
+        </div>
+      </div>
+    );
+  },
+})
 
-// var StoryList = React.createClass({
-//   render: function() {
-//     // console.log("this.props.stories");
-//     // console.log(this.props.stories);
-//     var indexNumber = 0;
-//     var storyNodes = _.map(this.props.stories, function(story) {
-//       indexNumber += 1;
-//       return <Story story={story.data} indexNumber={indexNumber} />;
-//     });
+var NotesList = React.createClass({
+  render: function() {
+    console.log("this.props.notes");
+    console.log(this.props.notes);
+    var storyNodes = _.map(this.props.notes, function(note) {
+      return <Note note={note.copy} key={note.id} />;
+    });
 
-//     return (
-//       <div className="container">
-//         {storyNodes}
-//       </div>
-//     );
-//   },
-// });
+    return (
+      <div className="container">
+        {storyNodes}
+      </div>
+    );
+  },
+});
 
-// window.onscroll = function(ev) {
-//   // console.log("on scroll");
-//   if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
-//     // console.log("bottom");
-//     $('body').trigger('bottom');
-//   }
-// };
-
-// var App = React.createClass({
-//   getInitialState: function() {
-
-//     var location = window.location.pathname;
-
-//     return ({
-//       url: location,
-//       stories: [],
-//     });
-//   },
+var App = React.createClass({
+  getInitialState: function() {
+    return ({
+      notes: [
+        {
+          id: "1",
+          copy: "hello"
+        },
+        {
+          id: "2",
+          copy: "nope",
+        }
+      ],
+    });
+  },
 //   loadMore: function(location) {
 //     var _this = this;
 //     // console.log(location);
@@ -128,20 +112,20 @@
 //     window.loadMore = this.loadMore;
 //     this.loadMore(this.state.url);
 //   },
-//   render: function() {
-//     return (
-//       <StoryList stories={this.state.stories} />
-//     );
-//   },
-// });
+  render: function() {
+    return (
+      <NotesList notes={this.state.notes} />
+    );
+  },
+});
 
-// var routeSet = (
-//   <Router history={browserHistory}>
-//     <Route path="/" component={App}>
-//       <Route path="/r/:subreddit" component={App} />
-//     </Route>
-//   </Router>
-// )
+var routeSet = (
+  <Router history={browserHistory}>
+    <Route path="/" component={App}>
+      <Route path="/r/:subreddit" component={App} />
+    </Route>
+  </Router>
+)
 
-// ReactDOM.render(routeSet, document.getElementById('app'))
-// browserHistory.push(window.location.pathname);
+ReactDOM.render(routeSet, document.getElementById('app'))
+browserHistory.push(window.location.pathname);
