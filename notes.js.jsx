@@ -44,9 +44,26 @@ var NotesList = React.createClass({
     });
 
     return (
-      <div className="container">
+      <div>
         {storyNodes}
       </div>
+    );
+  },
+});
+
+
+var Compose = React.createClass({
+  render: function() {
+    return (
+      <form>
+        <div className="form-group">
+          <input type="email" className="form-control" id="exampleInputEmail1" placeholder="Email" />
+        </div>
+        <div className="form-group">
+          <input type="file" id="exampleInputFile" />
+        </div>
+        <button type="submit" className="btn btn-default btn-primary-outline">Save</button>
+      </form>
     );
   },
 });
@@ -114,7 +131,10 @@ var App = React.createClass({
 //   },
   render: function() {
     return (
-      <NotesList notes={this.state.notes} />
+      <div className="container">
+        <Compose />
+        <NotesList notes={this.state.notes} />
+      </div>
     );
   },
 });
