@@ -45,8 +45,12 @@ var Compose = React.createClass({
   handleSubmit: function(e) {
     e.preventDefault();
     var copy = this.state.copy.trim();
+    if (copy == "") {
+      return;
+    }
     this.props.onCommentSubmit({copy: copy});
-    this.setState({author: '', text: ''});
+    this.setState({copy: ''});
+
   },
 
   render: function() {
@@ -55,7 +59,7 @@ var Compose = React.createClass({
         <div className="form-group">
           <textarea
             onChange={this.handleCopyChange}
-            type="cooy" className="form-control" id="note-copy"></textarea>
+            type="copy" className="form-control" id="note-copy" value={this.state.copy}></textarea>
         </div>
         <div className="form-group">
           <input type="file" id="exampleInputFile" />
@@ -105,7 +109,7 @@ var App = React.createClass({
       success: function( response ) {
         // console.log("successfully created");
         // console.log(response);
-        var notes = _this.state.notes.concat(response);
+        var notes = [response].concat(_this.state.notes);
         _this.setState({notes: notes});
       }
     });
