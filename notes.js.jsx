@@ -27,7 +27,7 @@ var Note = React.createClass({
 
     return (
       <div className="row" key={this.props.key}>
-        <div className="col-xs-1">
+        <div className="col-xs-12">
           {this.props.note.copy}
         </div>
       </div>
@@ -37,10 +37,10 @@ var Note = React.createClass({
 
 var NotesList = React.createClass({
   render: function() {
-    console.log("this.props.notes");
-    console.log(this.props.notes);
+    // console.log("this.props.notes");
+    // console.log(this.props.notes);
     var storyNodes = _.map(this.props.notes, function(note) {
-      return <Note note={note.copy} key={note.id} />;
+      return <Note note={note} key={note.id} />;
     });
 
     return (
