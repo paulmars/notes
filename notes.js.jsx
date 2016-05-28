@@ -92,9 +92,6 @@ var App = React.createClass({
       method: "GET",
       url: url,
       dataType: "json",
-      data: {
-          format: "json"
-      },
       success: function( response ) {
         _this.setState({notes: response});
       }
@@ -109,9 +106,6 @@ var App = React.createClass({
       method: "DELETE",
       url: url,
       dataType: "json",
-      data: {
-        format: "json"
-      },
       success: function( response ) {
         _this.setState({notes: response});
       }
@@ -127,7 +121,6 @@ var App = React.createClass({
       url: url,
       dataType: "json",
       data: {
-        format: "json",
         copy: data.copy
       },
       success: function( response ) {
