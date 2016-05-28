@@ -31,16 +31,36 @@ var NotesList = React.createClass({
 
 
 var Compose = React.createClass({
+
+  getInitialState: function() {
+    return {
+      copy: ''
+    };
+  },
+
+  handleCopyChange: function(e) {
+    this.setState({copy: e.target.value});
+  },
+
+  handleSubmit: function(e) {
+    e.preventDefault();
+    var copy = this.state.copy.trim();
+    this.props.onCommentSubmit({copy: copy});
+    this.setState({author: '', text: ''});
+  },
+
   render: function() {
     return (
-      <form>
+      <form onSubmit={this.handleSubmit}>
         <div className="form-group">
-          <textarea type="cooy" className="form-control" id="note-copy" placeholder="copy"></textarea>
+          <textarea
+            onChange={this.handleCopyChange}
+            type="cooy" className="form-control" id="note-copy"></textarea>
         </div>
         <div className="form-group">
           <input type="file" id="exampleInputFile" />
         </div>
-        <button type="submit" className="btn btn-default btn-primary-outline">Save</button>
+        <button onClick={this.save} type="submit" className="btn btn-default btn-primary-outline">Save</button>
       </form>
     );
   },
@@ -54,31 +74,50 @@ var App = React.createClass({
     });
   },
   loadData: function() {
-    // console.log("load data");
-    // var url = "/i/docs/notes.json";
-    // var _this = this;
+    var url = "/i/docs/notes.json";
+    var _this = this;
 
-    // $.ajax({
-    //   method: "GET",
-    //   url: url,
-    //   dataType: "json",
-    //   data: {
-    //       format: "json"
-    //   },
-    //   success: function( response ) {
-    //     console.log("response");
-    //     console.log(response);
-    //     _this.setState({notes: notes});
-    //   }
-    // });
+    $.ajax({
+      method: "GET",
+      url: url,
+      dataType: "json",
+      data: {
+          format: "json"
+      },
+      success: function( response ) {
+        _this.setState({notes: response});
+      }
+    });
   },
+
+  onCommentSubmit: function(data) {
+    var url = "/i/docs/notes.json";
+    var _this = this;
+
+    $.ajax({
+      method: "POST",
+      url: url,
+      dataType: "json",
+      data: {
+        format: "json",
+        copy: data.copy
+      },
+      success: function( response ) {
+        // console.log("successfully created");
+        // console.log(response);
+        var notes = _this.state.notes.concat(response);
+        _this.setState({notes: notes});
+      }
+    });
+  },
+
   componentDidMount: function() {
     this.loadData();
   },
   render: function() {
     return (
       <div className="container">
-        <Compose />
+        <Compose onCommentSubmit={this.onCommentSubmit} />
         <NotesList notes={this.state.notes} />
       </div>
     );
