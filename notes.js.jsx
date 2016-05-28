@@ -4,11 +4,18 @@ var Route = ReactRouter.Route;
 var browserHistory = History.createHistory();
 
 var Note = React.createClass({
+  remove: function(e) {
+    this.props.remove(this.props.note.id);
+  },
+
   render: function() {
     return (
       <div className="row" key={this.props.key}>
-        <div className="col-xs-12">
+        <div className="col-xs-11">
           {this.props.note.copy}
+        </div>
+        <div className="col-xs-1">
+          <a onClick={this.remove} href="#">delete</a>
         </div>
       </div>
     );
@@ -17,8 +24,9 @@ var Note = React.createClass({
 
 var NotesList = React.createClass({
   render: function() {
+    var _this = this;
     var storyNodes = _.map(this.props.notes, function(note) {
-      return <Note note={note} key={note.id} />;
+      return <Note note={note} key={note.id} remove={_this.props.remove} />;
     });
 
     return (
@@ -50,7 +58,6 @@ var Compose = React.createClass({
     }
     this.props.onCommentSubmit({copy: copy});
     this.setState({copy: ''});
-
   },
 
   render: function() {
@@ -94,6 +101,23 @@ var App = React.createClass({
     });
   },
 
+  remove: function(id) {
+    var url = "/i/docs/notes/" + id + ".json";
+    var _this = this;
+
+    $.ajax({
+      method: "DELETE",
+      url: url,
+      dataType: "json",
+      data: {
+        format: "json"
+      },
+      success: function( response ) {
+        _this.setState({notes: response});
+      }
+    });
+  },
+
   onCommentSubmit: function(data) {
     var url = "/i/docs/notes.json";
     var _this = this;
@@ -122,7 +146,7 @@ var App = React.createClass({
     return (
       <div className="container">
         <Compose onCommentSubmit={this.onCommentSubmit} />
-        <NotesList notes={this.state.notes} />
+        <NotesList notes={this.state.notes} remove={this.remove} />
       </div>
     );
   },
