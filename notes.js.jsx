@@ -57,7 +57,7 @@ var Compose = React.createClass({
     return (
       <form>
         <div className="form-group">
-          <input type="email" className="form-control" id="exampleInputEmail1" placeholder="Email" />
+          <textarea type="cooy" className="form-control" id="note-copy" placeholder="copy"></textarea>
         </div>
         <div className="form-group">
           <input type="file" id="exampleInputFile" />
