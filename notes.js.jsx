@@ -87,9 +87,7 @@ var App = React.createClass({
 
 var routeSet = (
   <Router history={browserHistory}>
-    <Route path="/" component={App}>
-      <Route path="/r/:subreddit" component={App} />
-    </Route>
+    <Route path="/" component={App} />
   </Router>
 )
 
